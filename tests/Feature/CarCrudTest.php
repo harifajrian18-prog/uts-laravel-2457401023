@@ -34,4 +34,55 @@ class CarCrudTest extends TestCase
         $response->assertSee('Muhammad Hari Fazrian · 2457401023');
         $response->assertSee('/cars');
     }
+
+    public function test_index_displays_empty_message_when_no_cars(): void
+    {
+        $this->get('/cars')
+            ->assertStatus(200)
+            ->assertSee('Belum ada data')
+            ->assertSee('Muhammad Hari Fazrian · 2457401023');
+    }
+
+    public function test_can_create_car_and_see_success_message(): void
+    {
+        $response = $this->post('/cars', [
+            'brand' => 'Toyota',
+            'model' => 'Avanza',
+            'plate_number' => 'B 1234 KJA',
+            'year' => 2021,
+            'daily_rate' => 350000,
+            'last_service_at' => '2026-09-12',
+            'is_available' => '1',
+            'notes' => 'Transmisi manual',
+        ]);
+
+        $response->assertRedirect('/cars');
+        $this->assertDatabaseHas('cars', [
+            'plate_number' => 'B 1234 KJA',
+            'is_available' => 1,
+        ]);
+        $this->get('/cars')->assertSee('Data mobil berhasil ditambahkan.');
+    }
+
+    public function test_store_validation_rejects_invalid_brand_and_missing_fields(): void
+    {
+        $response = $this->from('/cars/create')->post('/cars', [
+            'brand' => 'Suzuki',
+            'model' => '',
+            'plate_number' => '',
+            'year' => 'bukan-angka',
+            'daily_rate' => -100,
+            'last_service_at' => 'bukan-tanggal',
+        ]);
+
+        $response->assertRedirect('/cars/create');
+        $response->assertSessionHasErrors([
+            'brand',
+            'model',
+            'plate_number',
+            'year',
+            'daily_rate',
+            'last_service_at',
+        ]);
+    }
 }
