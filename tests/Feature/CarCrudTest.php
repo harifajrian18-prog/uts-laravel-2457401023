@@ -151,4 +151,10 @@ class CarCrudTest extends TestCase
             'color' => 'Putih',
         ]);
     }
+
+    public function test_database_seeder_populates_exactly_13_cars(): void
+    {
+        $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $this->assertDatabaseCount('cars', 13);
+    }
 }
