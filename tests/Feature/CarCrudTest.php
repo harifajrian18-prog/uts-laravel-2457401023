@@ -25,4 +25,13 @@ class CarCrudTest extends TestCase
             'notes',
         ]));
     }
+
+    public function test_home_page_displays_app_title_description_link_and_footer(): void
+    {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('Manajemen Rental Mobil');
+        $response->assertSee('Muhammad Hari Fazrian · 2457401023');
+        $response->assertSee('/cars');
+    }
 }
