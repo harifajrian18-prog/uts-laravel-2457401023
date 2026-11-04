@@ -71,6 +71,7 @@ class CarController extends Controller
             'model' => ['required', 'string', 'max:255'],
             'plate_number' => ['required', 'string', 'max:50'],
             'year' => ['required', 'integer', 'min:1990', 'max:2035'],
+            'color' => ['nullable', 'string', 'max:100'],
             'daily_rate' => ['required', 'numeric', 'min:0'],
             'last_service_at' => ['required', 'date'],
             'is_available' => ['nullable', 'boolean'],

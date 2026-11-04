@@ -59,6 +59,16 @@
         </div>
 
         <div class="form-row">
+            <label for="color">Warna</label>
+            <div>
+                <input type="text" id="color" name="color" value="{{ old('color', $car->color) }}" placeholder="Contoh: Putih (opsional)" class="form-control @error('color') is-invalid @enderror">
+                @error('color')
+                    <div class="error-text">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-row">
             <label for="daily_rate">Tarif Harian (Rp)</label>
             <div>
                 <input type="number" step="0.01" id="daily_rate" name="daily_rate" value="{{ old('daily_rate', (float) $car->daily_rate) }}" placeholder="Contoh: 350000" class="form-control @error('daily_rate') is-invalid @enderror">

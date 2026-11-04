@@ -129,4 +129,26 @@ class CarCrudTest extends TestCase
         $this->delete("/cars/{$car->id}")->assertRedirect('/cars');
         $this->assertDatabaseMissing('cars', ['id' => $car->id]);
     }
+
+    public function test_color_column_exists_and_can_be_saved(): void
+    {
+        $this->assertTrue(Schema::hasColumn('cars', 'color'));
+
+        $this->post('/cars', [
+            'brand' => 'Toyota',
+            'model' => 'Avanza',
+            'plate_number' => 'B 1234 KJA',
+            'year' => 2021,
+            'color' => 'Putih',
+            'daily_rate' => 350000,
+            'last_service_at' => '2026-09-12',
+            'is_available' => '1',
+            'notes' => 'Transmisi manual',
+        ])->assertRedirect('/cars');
+
+        $this->assertDatabaseHas('cars', [
+            'plate_number' => 'B 1234 KJA',
+            'color' => 'Putih',
+        ]);
+    }
 }

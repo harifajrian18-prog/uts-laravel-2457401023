@@ -17,6 +17,7 @@
                     <th>Model</th>
                     <th>Plat Nomor</th>
                     <th>Tahun</th>
+                    <th>Warna</th>
                     <th>Tarif Harian</th>
                     <th>Servis Terakhir</th>
                     <th>Tersedia</th>
@@ -31,6 +32,7 @@
                         <td>{{ $car->model }}</td>
                         <td>{{ $car->plate_number }}</td>
                         <td>{{ $car->year }}</td>
+                        <td>{{ $car->color ?: '-' }}</td>
                         <td>Rp {{ number_format((float) $car->daily_rate, 0, ',', '.') }}</td>
                         <td>{{ $car->last_service_at->format('Y-m-d') }}</td>
                         <td>{{ $car->is_available ? 'Ya' : 'Tidak' }}</td>
@@ -48,7 +50,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" style="text-align: center; padding: 20px; color: #555555;">
+                        <td colspan="10" style="text-align: center; padding: 20px; color: #555555;">
                             Belum ada data. Klik tombol "+ Tambah Mobil" di kanan atas untuk menambahkan data mobil baru.
                         </td>
                     </tr>

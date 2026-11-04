@@ -25,6 +25,10 @@
             <div class="detail-value">{{ $car->year }}</div>
         </div>
         <div class="detail-row">
+            <div class="detail-label">Warna</div>
+            <div class="detail-value">{{ $car->color ?: '(kosong)' }}</div>
+        </div>
+        <div class="detail-row">
             <div class="detail-label">Tarif Harian</div>
             <div class="detail-value">Rp {{ number_format((float) $car->daily_rate, 0, ',', '.') }}</div>
         </div>
