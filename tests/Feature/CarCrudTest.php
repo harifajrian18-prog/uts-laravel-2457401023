@@ -85,4 +85,48 @@ class CarCrudTest extends TestCase
             'last_service_at',
         ]);
     }
+
+    public function test_can_view_car_detail_edit_update_and_delete(): void
+    {
+        $car = \App\Models\Car::create([
+            'brand' => 'Honda',
+            'model' => 'Brio',
+            'plate_number' => 'B 2045 TRS',
+            'year' => 2022,
+            'daily_rate' => 300000,
+            'last_service_at' => '2026-10-01',
+            'is_available' => true,
+            'notes' => 'Catatan awal',
+        ]);
+
+        $this->get("/cars/{$car->id}")
+            ->assertStatus(200)
+            ->assertSee('B 2045 TRS')
+            ->assertSee('Catatan awal');
+
+        $this->get("/cars/{$car->id}/edit")
+            ->assertStatus(200)
+            ->assertSee('value="B 2045 TRS"', false)
+            ->assertSee('value="2026-10-01"', false);
+
+        $this->put("/cars/{$car->id}", [
+            'brand' => 'Hyundai',
+            'model' => 'Creta',
+            'plate_number' => 'D 1789 AB',
+            'year' => 2023,
+            'daily_rate' => 500000,
+            'last_service_at' => '2026-08-20',
+            'notes' => 'Termasuk asuransi',
+        ])->assertRedirect('/cars');
+
+        $this->assertDatabaseHas('cars', [
+            'id' => $car->id,
+            'brand' => 'Hyundai',
+            'plate_number' => 'D 1789 AB',
+            'is_available' => 0,
+        ]);
+
+        $this->delete("/cars/{$car->id}")->assertRedirect('/cars');
+        $this->assertDatabaseMissing('cars', ['id' => $car->id]);
+    }
 }

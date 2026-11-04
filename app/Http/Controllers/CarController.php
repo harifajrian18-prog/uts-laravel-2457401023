@@ -34,6 +34,36 @@ class CarController extends Controller
             ->with('success', 'Data mobil berhasil ditambahkan.');
     }
 
+    public function show(Car $car): View
+    {
+        return view('cars.show', compact('car'));
+    }
+
+    public function edit(Car $car): View
+    {
+        $brands = Car::BRANDS;
+
+        return view('cars.edit', compact('car', 'brands'));
+    }
+
+    public function update(Request $request, Car $car): RedirectResponse
+    {
+        $validated = $this->validateCar($request);
+
+        $car->update($validated);
+
+        return redirect()->route('cars.index')
+            ->with('success', 'Data mobil berhasil diubah.');
+    }
+
+    public function destroy(Car $car): RedirectResponse
+    {
+        $car->delete();
+
+        return redirect()->route('cars.index')
+            ->with('success', 'Data mobil berhasil dihapus.');
+    }
+
     protected function validateCar(Request $request): array
     {
         $validated = $request->validate([
